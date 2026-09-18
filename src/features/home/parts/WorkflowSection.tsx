@@ -18,21 +18,16 @@ const EHR_VENDORS = ["Epic", "Oracle Health", "MEDITECH"];
 
 type StepState = "future" | "past" | "active";
 
-// Same connector-pipe language as the interoperability/reporting-engine
-// core diagrams — a flanking card gets a short animated stub reaching
-// toward the Lumen core in the middle column.
-function ConnectorStub({ side }: { side: "left" | "right" }) {
+// A short vertical stub connecting each stacked block to the next — the
+// packet's own path from EHR down through the core and out to delivery.
+function VerticalConnector() {
   return (
-    <span
+    <div
       aria-hidden="true"
-      className={`absolute top-1/2 hidden h-px w-6 -translate-y-1/2 overflow-hidden lg:block ${
-        side === "right"
-          ? "right-0 translate-x-full bg-gradient-to-r from-line-strong to-accent/60"
-          : "left-0 -translate-x-full bg-gradient-to-l from-line-strong to-accent/60"
-      }`}
+      className="relative mx-auto h-8 w-px overflow-hidden bg-gradient-to-b from-line-strong to-accent/60"
     >
-      <span className="pulse-dot-horizontal absolute top-1/2 h-1.5 w-1.5 -translate-y-1/2 rounded-full bg-accent shadow-[0_0_8px_2px_rgb(var(--color-accent-rgb)/0.6)]" />
-    </span>
+      <span className="pulse-dot-vertical absolute left-1/2 h-1.5 w-1.5 -translate-x-1/2 rounded-full bg-accent shadow-[0_0_8px_2px_rgb(var(--color-accent-rgb)/0.6)]" />
+    </div>
   );
 }
 
@@ -177,10 +172,10 @@ export function WorkflowSection() {
           </div>
         </div>
 
-        {/* Three boxes: the order arrives from the EHR, Lumen runs the clinical process as
-            layered floors starting with Order, the record ships downstream. The EHR and
-            delivery cards share the same compact card style/size. */}
-        <div className="grid gap-6 lg:grid-cols-[1fr_1.1fr_1fr] lg:items-stretch">
+        {/* Stacked top to bottom, the same order the packet actually travels:
+            the order arrives, Lumen runs it through the layered core, then it
+            ships downstream. */}
+        <div className="mx-auto flex w-full max-w-2xl flex-col items-stretch">
           {/* Order arrives */}
           <div className="flex flex-col gap-4">
             <span className="text-xs font-semibold uppercase tracking-[0.2em] text-foreground-muted">
@@ -190,11 +185,10 @@ export function WorkflowSection() {
               type="button"
               onClick={() => selectNode(0)}
               aria-pressed={activeIndex === 0}
-              className={`hover-card relative w-full cursor-pointer rounded-xl border p-5 text-left transition ${
+              className={`hover-card w-full cursor-pointer rounded-xl border p-5 text-left transition ${
                 activeIndex === 0 ? "border-accent bg-accent-soft" : "border-line-strong bg-ink-card"
               }`}
             >
-              <ConnectorStub side="right" />
               <div className="flex flex-wrap gap-1.5">
                 {EHR_VENDORS.map((vendor) => (
                   <span
@@ -210,38 +204,35 @@ export function WorkflowSection() {
             </button>
           </div>
 
+          <VerticalConnector />
+
           {/* Lumen's clinical process — the core, shown as a tower of floors starting with Order */}
-          <div className="flex flex-col gap-4">
-            <span aria-hidden="true" className="invisible text-xs font-semibold uppercase tracking-[0.2em]">
-              Core
-            </span>
-            <div className="flex flex-col gap-6 rounded-2xl border border-accent bg-gradient-to-b from-accent-soft to-ink-card p-8 shadow-[0_0_45px_-18px_rgb(var(--color-accent-rgb)/0.4)]">
-              <div className="flex flex-col gap-2">
-                <span className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">Core</span>
-                <h3 className="text-2xl font-semibold text-foreground">Lumen&apos;s clinical process</h3>
-              </div>
-              <div className="overflow-hidden rounded-xl border border-line-strong">
-                {clinicalNodes.map((node, i) => (
-                  <ClinicalFloor
-                    key={node.id}
-                    node={node}
-                    state={stateFor(CLINICAL_START + i)}
-                    isFirst={i === 0}
-                    onSelect={() => selectNode(CLINICAL_START + i)}
-                  />
-                ))}
-              </div>
+          <div className="flex flex-col gap-6 rounded-2xl border border-accent bg-gradient-to-b from-accent-soft to-ink-card p-8 shadow-[0_0_45px_-18px_rgb(var(--color-accent-rgb)/0.4)]">
+            <div className="flex flex-col gap-2">
+              <span className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">Core</span>
+              <h3 className="text-2xl font-semibold text-foreground">Lumen&apos;s clinical process</h3>
+            </div>
+            <div className="overflow-hidden rounded-xl border border-line-strong">
+              {clinicalNodes.map((node, i) => (
+                <ClinicalFloor
+                  key={node.id}
+                  node={node}
+                  state={stateFor(CLINICAL_START + i)}
+                  isFirst={i === 0}
+                  onSelect={() => selectNode(CLINICAL_START + i)}
+                />
+              ))}
             </div>
           </div>
 
-          {/* Delivered downstream — pinned to the bottom, mirroring the packet's
-              top-to-bottom flow through the core tower (Order at the top floor,
-              Final Report at the bottom, then it ships out). */}
+          <VerticalConnector />
+
+          {/* Delivered downstream */}
           <div className="flex flex-col gap-4">
             <span className="text-xs font-semibold uppercase tracking-[0.2em] text-foreground-muted">
               Delivered downstream
             </span>
-            <div className="flex flex-1 flex-col justify-end gap-4">
+            <div className="grid gap-4 sm:grid-cols-2">
               {deliveryNodes.map((node, i) => {
                 const state = stateFor(CLINICAL_END + 1 + i);
                 return (
@@ -250,7 +241,7 @@ export function WorkflowSection() {
                     type="button"
                     onClick={() => selectNode(CLINICAL_END + 1 + i)}
                     aria-pressed={state === "active"}
-                    className={`hover-card relative w-full cursor-pointer rounded-xl border p-5 text-left transition ${
+                    className={`hover-card w-full cursor-pointer rounded-xl border p-5 text-left transition ${
                       state === "active"
                         ? "border-accent bg-accent-soft"
                         : state === "past"
@@ -258,7 +249,6 @@ export function WorkflowSection() {
                           : "border-line-strong bg-ink-card"
                     }`}
                   >
-                    <ConnectorStub side="left" />
                     <h3 className="text-sm font-semibold text-foreground">{node.title}</h3>
                     <p className="mt-1.5 text-sm leading-relaxed text-foreground-muted">{node.blurb}</p>
                   </button>

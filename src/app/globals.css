@@ -1,0 +1,241 @@
+@import "tailwindcss";
+
+:root {
+  --color-ink: #0a0b0d;
+  --color-ink-elevated: #121417;
+  --color-ink-card: #16181c;
+  --color-paper: #ffffff;
+  --color-paper-muted: #f6f6f6;
+  --color-foreground: #f4f4f2;
+  --color-foreground-muted: #a3a7ad;
+  --color-line: rgba(244, 244, 242, 0.1);
+  --color-line-strong: rgba(244, 244, 242, 0.18);
+  --color-accent: #e0392f;
+  --color-accent-rgb: 224 57 47;
+  --color-accent-soft: rgba(224, 57, 47, 0.14);
+  --color-accent-foreground: #fff6f5;
+  --color-button: #7a1220;
+  --color-button-rgb: 122 18 32;
+  --color-button-soft: rgba(122, 18, 32, 0.18);
+  --color-button-foreground: #fff5f5;
+  --color-hover-overlay: rgba(255, 255, 255, 0.05);
+}
+
+/*
+ * Light theme: clean neutral white, hardened near-black text, and a
+ * murderously dark red accent — no cream/warm undertones anywhere.
+ * Dark is the default (bare :root above); light is opt-in via
+ * [data-theme="light"] on <html>, set by ThemeToggle.
+ */
+:root[data-theme="light"] {
+  --color-ink: #ffffff;
+  --color-ink-elevated: #f6f6f6;
+  --color-ink-card: #ffffff;
+  --color-foreground: #0a0a0b;
+  --color-foreground-muted: #45474b;
+  --color-line: rgba(10, 10, 11, 0.12);
+  --color-line-strong: rgba(10, 10, 11, 0.22);
+  --color-accent: #52070f;
+  --color-accent-rgb: 82 7 15;
+  --color-accent-soft: rgba(10, 10, 11, 0.04);
+  --color-accent-foreground: #ffffff;
+  --color-button: #7a1220;
+  --color-button-rgb: 122 18 32;
+  --color-button-soft: rgba(10, 10, 11, 0.04);
+  --color-button-foreground: #ffffff;
+  --color-hover-overlay: rgba(10, 10, 11, 0.045);
+}
+
+:root[data-theme="light"] .hero-glow {
+  opacity: 0.2;
+}
+
+@theme inline {
+  --color-ink: var(--color-ink);
+  --color-ink-elevated: var(--color-ink-elevated);
+  --color-ink-card: var(--color-ink-card);
+  --color-paper: var(--color-paper);
+  --color-paper-muted: var(--color-paper-muted);
+  --color-foreground: var(--color-foreground);
+  --color-foreground-muted: var(--color-foreground-muted);
+  --color-line: var(--color-line);
+  --color-line-strong: var(--color-line-strong);
+  --color-accent: var(--color-accent);
+  --color-accent-soft: var(--color-accent-soft);
+  --color-accent-foreground: var(--color-accent-foreground);
+  --color-button: var(--color-button);
+  --color-button-soft: var(--color-button-soft);
+  --color-button-foreground: var(--color-button-foreground);
+  --color-hover: var(--color-hover-overlay);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@keyframes flow-dash {
+  to {
+    stroke-dashoffset: -240;
+  }
+}
+
+@keyframes pulse-dot-vertical {
+  0% {
+    top: 0%;
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+
+@keyframes pulse-dot-horizontal {
+  0% {
+    left: 0%;
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    left: 100%;
+    opacity: 0;
+  }
+}
+
+@keyframes synapse-travel {
+  0% {
+    left: 0%;
+    opacity: 0;
+  }
+  6% {
+    opacity: 1;
+  }
+  28% {
+    left: 100%;
+    opacity: 1;
+  }
+  34% {
+    left: 100%;
+    opacity: 0;
+  }
+  100% {
+    left: 100%;
+    opacity: 0;
+  }
+}
+
+@keyframes synapse-flash {
+  0%,
+  22% {
+    background-color: var(--color-line-strong);
+    box-shadow: none;
+  }
+  30% {
+    background-color: rgb(var(--color-accent-rgb) / 0.55);
+    box-shadow: 0 0 5px 0.5px rgb(var(--color-accent-rgb) / 0.3);
+  }
+  42%,
+  100% {
+    background-color: var(--color-line-strong);
+    box-shadow: none;
+  }
+}
+
+@keyframes drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(1.5%, -2%, 0) scale(1.05);
+  }
+}
+
+@keyframes soft-pop {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hover-card {
+  transition:
+    transform 220ms ease,
+    border-color 220ms ease,
+    background-color 220ms ease;
+}
+
+.hover-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--color-accent);
+}
+
+.ambient-drift {
+  animation: drift 14s ease-in-out infinite;
+}
+
+.pulse-dot-vertical {
+  animation: pulse-dot-vertical 2.4s linear infinite;
+}
+
+.pulse-dot-horizontal {
+  animation: pulse-dot-horizontal 2.6s linear infinite;
+}
+
+.waveform-line {
+  stroke-dasharray: 6 10;
+  animation: flow-dash 6s linear infinite;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-ink);
+  color: var(--color-foreground);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  transition:
+    background-color 200ms ease,
+    color 200ms ease;
+}
+
+.hero-glow {
+  opacity: 1;
+  transition: opacity 200ms ease;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-accent-foreground);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}

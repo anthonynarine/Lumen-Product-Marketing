@@ -121,6 +121,39 @@ const tenantInvariants = [
   },
 ];
 
+const dataProtectionFeatures = [
+  {
+    title: "Individual accounts, role-based permissions",
+    description:
+      "Every user signs in with their own credentials — never a shared login. What someone can do is scoped to their role and their organization: for example, a technologist can sign a report, but only a physician can finalize it — and that boundary is enforced per facility, not just per account.",
+  },
+  {
+    title: "Data isolation enforced twice",
+    description:
+      "Each customer organization's data is walled off both in the application and, independently, at the database itself. That second, database-level boundary means a bug in application logic still can't expose one organization's data to another.",
+  },
+  {
+    title: "Tamper-evident audit trail",
+    description:
+      "Every action on a report — signing, finalizing, an addendum, a change in who has access — is permanently recorded. Once written, an entry can't be edited or deleted.",
+  },
+  {
+    title: "Finalized reports are locked",
+    description:
+      "Once a report is finalized, it's locked. Any change after that point requires an explicit, logged addendum rather than silently overwriting clinical history.",
+  },
+  {
+    title: "Encrypted in transit",
+    description:
+      "All traffic is encrypted end to end — between the browser and Lumen, and between Lumen's own services and its database — using TLS/HTTPS throughout.",
+  },
+  {
+    title: "De-identified file storage",
+    description:
+      "Uploaded ultrasound images are stored under randomly generated identifiers, never their original filenames — so patient-identifying details don't end up sitting in a storage path or a log file.",
+  },
+];
+
 const securityQA = [
   {
     question: "How do you handle authentication?",
@@ -261,6 +294,24 @@ export default function SecurityPage() {
       <section className="border-b border-line bg-ink-elevated py-16 sm:py-24">
         <Container className="flex flex-col gap-10">
           <SectionHeading
+            eyebrow="Data protection"
+            title="Safeguards built into how patient data is handled"
+            description="Engineered with healthcare data in mind: access, isolation, auditability, and storage are each enforced in code, independent of one another."
+          />
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {dataProtectionFeatures.map((feature) => (
+              <div key={feature.title} className="hover-card rounded-xl border border-line-strong bg-ink-card p-6">
+                <h3 className="text-sm font-semibold text-foreground">{feature.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-foreground-muted">{feature.description}</p>
+              </div>
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      <section className="border-b border-line bg-ink py-16 sm:py-24">
+        <Container className="flex flex-col gap-10">
+          <SectionHeading
             eyebrow="Security review"
             title="Straight answers to the questions security teams actually ask"
           />
@@ -278,10 +329,11 @@ export default function SecurityPage() {
               A note on HIPAA
             </h3>
             <p className="mt-3 max-w-2xl text-sm leading-relaxed text-foreground-muted">
-              Lumen is built with HIPAA-aligned technical safeguards and designed to support
-              HIPAA-compliant deployment. This site does not claim HIPAA certification, and it
-              does not process, store, or transmit protected health information (PHI). Any
-              screenshots or examples shown across this site use synthetic data only.
+              Lumen's architecture is built with HIPAA safeguards in mind. This site does not
+              claim HIPAA certification, a signed Business Associate Agreement, or a completed
+              third-party audit, and it does not process, store, or transmit protected health
+              information (PHI). Any screenshots or examples shown across this site use synthetic
+              data only.
             </p>
           </div>
         </Container>

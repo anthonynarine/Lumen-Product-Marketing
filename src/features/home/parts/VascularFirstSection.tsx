@@ -69,10 +69,6 @@ const DOMAINS: { name: string; exams: DomainExam[]; at: Placement }[] = [
   },
 ];
 
-// The one domain currently plugged in and running — drives which wall of the
-// engine gets its border broken open for that domain's duct to pass through.
-const LIVE_DOMAIN = DOMAINS.find((domain) => domain.exams.some((exam) => exam.live));
-
 export function VascularFirstSection() {
   return (
     <section className="border-b border-line bg-ink-elevated py-20 sm:py-28" id="vascular">
@@ -131,10 +127,13 @@ export function VascularFirstSection() {
               dropped and everything falls back to an ordinary grid, so no
               connector is ever drawn between cards that have reflowed. */}
           <div className="rounded-2xl border border-line-strong bg-ink-card p-6 sm:p-8 lg:px-8 lg:py-12">
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-[1fr_minmax(17rem,1.45fr)_1fr] lg:grid-rows-[auto_auto_auto_auto] lg:gap-x-16 lg:gap-y-6">
+            {/* Rows 1-3 are equal height (not auto) so the three domain cards
+                on each side line up evenly regardless of how much exam text
+                each one holds. */}
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-[1fr_minmax(17rem,1.45fr)_1fr] lg:grid-rows-[1fr_1fr_1fr_auto] lg:gap-x-16 lg:gap-y-6">
               {/* The core. Spans the three domain rows so each side connector
                   meets it at its own height. */}
-              <div className="relative flex flex-col items-center justify-center gap-2 rounded-2xl border border-accent/50 bg-ink px-6 py-8 text-center shadow-[0_0_45px_-28px_rgb(var(--color-accent-rgb)/0.5)] sm:col-span-2 lg:col-span-1 lg:col-start-2 lg:row-start-1 lg:row-span-3">
+              <div className="relative flex flex-col items-center justify-center gap-2 rounded-2xl bg-ink px-6 py-8 text-center shadow-[0_0_45px_-28px_rgb(var(--color-accent-rgb)/0.5)] sm:col-span-2 lg:col-span-1 lg:col-start-2 lg:row-start-1 lg:row-span-3">
                 <div className="absolute inset-0 overflow-hidden rounded-2xl">
                   <ParticleField count={220} />
                   <span
@@ -142,21 +141,10 @@ export function VascularFirstSection() {
                     className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgb(var(--color-accent-rgb)/0.12),rgb(var(--color-accent-rgb)/0.03)_50%,transparent_70%)]"
                   />
                 </div>
-                {LIVE_DOMAIN ? (
-                  // Sits on the border itself (not just inside it), which is
-                  // only possible because this box no longer clips its own
-                  // children — the particle canvas above is what's clipped now.
-                  <span
-                    aria-hidden="true"
-                    className={`hidden lg:block lg:absolute lg:bg-ink ${
-                      LIVE_DOMAIN.at.side === "left"
-                        ? "lg:-left-px lg:top-1/2 lg:h-11 lg:w-[3px] lg:-translate-y-1/2"
-                        : LIVE_DOMAIN.at.side === "right"
-                          ? "lg:-right-px lg:top-1/2 lg:h-11 lg:w-[3px] lg:-translate-y-1/2"
-                          : "lg:-bottom-px lg:left-1/2 lg:h-[3px] lg:w-11 lg:-translate-x-1/2"
-                    }`}
-                  />
-                ) : null}
+                <span
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-0 rounded-2xl border border-accent/50"
+                />
                 <h4 className="relative text-sm font-semibold uppercase tracking-[0.15em] text-accent">
                   The vascular engine
                 </h4>
@@ -190,19 +178,6 @@ export function VascularFirstSection() {
                 const isVerticalConnector = side === "bottom";
                 const connectorSize = isVerticalConnector ? "lg:h-5 lg:w-px" : "lg:h-px lg:w-16";
                 const connector = `${connectorPosition} ${connectorSize}`;
-                // A ready domain's duct has two rails, like a real pipe wall,
-                // running the full gap and touching both the card and the
-                // engine flush. Each container's own border is broken open
-                // exactly where the duct meets it (see the wall-break patches
-                // below), so the rails read as running straight through a cut
-                // in the wall rather than stopping at it. Real particles drift
-                // through the channel between the rails, not a CSS dot.
-                const ductSize = isVerticalConnector
-                  ? "lg:h-5 lg:w-10 lg:-translate-x-1/2"
-                  : "lg:h-10 lg:w-16 lg:-translate-y-1/2";
-                const railClass = isVerticalConnector
-                  ? "absolute inset-y-0 w-px bg-accent/70 shadow-[0_0_6px_-1px_rgb(var(--color-accent-rgb)/0.6)]"
-                  : "absolute inset-x-0 h-px bg-accent/70 shadow-[0_0_6px_-1px_rgb(var(--color-accent-rgb)/0.6)]";
                 const node =
                   side === "left"
                     ? "lg:left-full lg:top-1/2 lg:-translate-x-1/2 lg:-translate-y-1/2"
@@ -212,21 +187,12 @@ export function VascularFirstSection() {
 
                 return (
                   <div key={domain.name} className={`relative ${cell}`}>
-                    {hasLive ? (
-                      <div
-                        aria-hidden="true"
-                        className={`hidden lg:block lg:absolute lg:overflow-hidden ${connectorPosition} ${ductSize}`}
-                      >
-                        <span className={isVerticalConnector ? `${railClass} left-0` : `${railClass} top-0`} />
-                        <span className={isVerticalConnector ? `${railClass} right-0` : `${railClass} bottom-0`} />
-                        <ParticleField count={40} />
-                      </div>
-                    ) : (
-                      <span
-                        aria-hidden="true"
-                        className={`hidden lg:block lg:absolute ${connector} bg-line-strong`}
-                      />
-                    )}
+                    <span
+                      aria-hidden="true"
+                      className={`hidden lg:block lg:absolute ${connector} ${
+                        hasLive ? "bg-accent" : "bg-line-strong"
+                      }`}
+                    />
                     <span
                       aria-hidden="true"
                       className={`hidden lg:block lg:absolute lg:h-1.5 lg:w-1.5 lg:rounded-full ${node} ${
@@ -235,31 +201,21 @@ export function VascularFirstSection() {
                     />
 
                     <div
-                      className={`hover-card relative flex h-full flex-col justify-center gap-2 rounded-xl border p-3 text-center transition ${
-                        hasLive ? "border-accent bg-ink-elevated" : "border-line-strong bg-ink"
+                      className={`hover-card group relative flex h-full flex-col justify-center gap-2 rounded-xl p-3 text-center transition ${
+                        hasLive ? "bg-ink-elevated" : "bg-ink"
                       }`}
                     >
                       {hasLive ? (
-                        <>
-                          <div className="absolute inset-0 overflow-hidden rounded-xl">
-                            <ParticleField count={30} />
-                          </div>
-                          {/* On the border itself, not just inside it — this
-                              box no longer clips its own children, so the
-                              patch can actually sit on top of the border
-                              pixel instead of stopping short of it. */}
-                          <span
-                            aria-hidden="true"
-                            className={`absolute bg-ink-elevated ${
-                              side === "left"
-                                ? "-right-px top-1/2 h-11 w-[3px] -translate-y-1/2"
-                                : side === "right"
-                                  ? "-left-px top-1/2 h-11 w-[3px] -translate-y-1/2"
-                                  : "-top-px left-1/2 h-[3px] w-11 -translate-x-1/2"
-                            }`}
-                          />
-                        </>
+                        <div className="absolute inset-0 overflow-hidden rounded-xl">
+                          <ParticleField count={30} />
+                        </div>
                       ) : null}
+                      <span
+                        aria-hidden="true"
+                        className={`pointer-events-none absolute inset-0 rounded-xl border transition-colors group-hover:border-accent ${
+                          hasLive ? "border-accent" : "border-line-strong"
+                        }`}
+                      />
                       <h5
                         className={`relative text-[11px] font-semibold uppercase leading-tight tracking-[0.08em] ${
                           hasLive ? "text-accent" : "text-foreground"

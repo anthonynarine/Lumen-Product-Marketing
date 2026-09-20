@@ -57,7 +57,7 @@ function ClinicalStation({
       aria-pressed={state === "active"}
       className={`group flex w-full items-center gap-2.5 rounded-lg border px-3 py-1.5 text-left transition-all duration-300 ${
         state === "active"
-          ? "border-accent bg-accent-soft"
+          ? "border-foreground/45 bg-ink-elevated"
           : state === "past"
             ? "border-line-strong bg-ink-elevated"
             : "border-line bg-ink hover:border-line-strong"
@@ -65,14 +65,16 @@ function ClinicalStation({
     >
       <span
         className={`font-mono text-[10px] tabular-nums transition-colors ${
-          state === "future" ? "text-foreground-muted/50" : "text-accent"
+          state === "future" ? "text-foreground-muted/50" : "text-foreground"
         }`}
       >
         {node.code}
       </span>
       <span
-        className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-md transition-colors ${
-          state === "future" ? "bg-ink-elevated text-foreground-muted" : "bg-accent-soft text-accent"
+        className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-md border transition-colors ${
+          state === "future"
+            ? "border-transparent bg-ink-elevated text-foreground-muted"
+            : "border-line-strong bg-ink-elevated text-foreground"
         }`}
       >
         <Icon aria-hidden="true" className="h-3 w-3" />
@@ -211,7 +213,7 @@ export function WorkflowSection() {
                 onClick={() => selectNode(0)}
                 aria-pressed={activeIndex === 0}
                 className={`hover-card w-full cursor-pointer rounded-xl border p-3.5 text-left transition ${
-                  activeIndex === 0 ? "border-accent bg-accent-soft" : "border-line-strong bg-ink-elevated"
+                  activeIndex === 0 ? "border-foreground/45 bg-ink-elevated" : "border-line-strong bg-ink-elevated"
                 }`}
               >
                 <div className="flex flex-wrap items-center gap-1.5">
@@ -220,7 +222,7 @@ export function WorkflowSection() {
                       key={vendor}
                       className={
                         i === 0
-                          ? "rounded-full bg-accent px-2.5 py-1 text-[10px] font-semibold text-accent-foreground"
+                          ? "rounded-full border border-foreground/45 px-2.5 py-1 text-[10px] font-semibold text-foreground"
                           : "rounded-full border border-line-strong bg-ink px-2.5 py-1 text-[10px] font-medium text-foreground-muted"
                       }
                     >
@@ -236,9 +238,9 @@ export function WorkflowSection() {
             <VerticalConnector />
 
             {/* Lumen's clinical process — the core */}
-            <div className="flex flex-col gap-3 rounded-2xl border border-accent bg-gradient-to-b from-accent-soft to-ink-card p-4 shadow-[0_0_45px_-18px_rgb(var(--color-accent-rgb)/0.4)] sm:p-5">
+            <div className="flex flex-col gap-3 rounded-2xl border border-line-strong bg-ink-card p-4 sm:p-5">
               <div className="flex items-baseline justify-between gap-3">
-                <span className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">
+                <span className="text-xs font-semibold uppercase tracking-[0.2em] text-foreground-muted">
                   Lumen&apos;s clinical process
                 </span>
                 <span className="font-mono text-[10px] text-foreground-muted/70">8 stations, one line</span>
@@ -273,9 +275,9 @@ export function WorkflowSection() {
                       aria-pressed={state === "active"}
                       className={`hover-card w-full cursor-pointer rounded-xl border p-3.5 text-left transition ${
                         state === "active"
-                          ? "border-accent bg-accent-soft"
+                          ? "border-foreground/45 bg-ink-elevated"
                           : state === "past"
-                            ? "border-accent/40 bg-ink-elevated"
+                            ? "border-line-strong bg-ink-elevated"
                             : "border-line-strong bg-ink-elevated"
                       }`}
                     >
@@ -291,7 +293,7 @@ export function WorkflowSection() {
           {/* Right: live inspect panel for whatever station is selected */}
           <div className="flex flex-col gap-6 rounded-2xl border border-line-strong bg-ink-card p-6 sm:sticky sm:top-24 sm:p-8">
             <div className="flex flex-col gap-2">
-              <span className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">
+              <span className="text-xs font-semibold uppercase tracking-[0.2em] text-foreground-muted">
                 {current.who}
               </span>
               <h3 className="text-2xl font-semibold text-foreground">

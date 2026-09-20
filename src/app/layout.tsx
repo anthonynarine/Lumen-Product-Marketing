@@ -15,6 +15,15 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+// Shared by Open Graph and Twitter. Resolved against `metadataBase`, so the
+// absolute URL every crawler requires is built for us.
+const socialImage = {
+  url: "/images/lumen-exam-reporting-factory-og.2bdcdc24.jpg",
+  width: 1200,
+  height: 630,
+  alt: "The Lumen exam reporting factory: a shared platform of users, exam lifecycle, imaging and integrations feeding a three-stage pipeline — protocol, measure, interpret — with the vascular engine plugged in at the end, contributing anatomy, rules, language and schema, and a finished carotid duplex report coming out.",
+};
+
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
@@ -36,11 +45,13 @@ export const metadata: Metadata = {
     url: siteConfig.url,
     siteName: siteConfig.name,
     type: "website",
+    images: [socialImage],
   },
   twitter: {
     card: "summary_large_image",
     title: "Lumen | Clinical Diagnostic Reporting, Imaging & Workflow",
     description: siteConfig.description,
+    images: [socialImage],
   },
   alternates: {
     canonical: "/",

@@ -161,6 +161,17 @@
   }
 }
 
+@keyframes caret-blink {
+  0%,
+  45% {
+    opacity: 1;
+  }
+  55%,
+  100% {
+    opacity: 0;
+  }
+}
+
 @keyframes drift {
   0%,
   100% {
@@ -204,6 +215,10 @@
 
 .pulse-dot-horizontal {
   animation: pulse-dot-horizontal 2.6s linear infinite;
+}
+
+.caret-blink {
+  animation: caret-blink 1s steps(1, end) infinite;
 }
 
 .waveform-line {

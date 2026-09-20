@@ -14,7 +14,7 @@ const cardiacScope = [
 
 export function ExpansionSection() {
   return (
-    <section className="border-b border-line bg-ink-elevated py-20 sm:py-28" id="beyond-vascular">
+    <section className="border-b border-line bg-ink py-20 sm:py-28" id="beyond-vascular">
       <Container className="flex flex-col gap-10">
         <SectionHeading
           eyebrow="Planned expansion"

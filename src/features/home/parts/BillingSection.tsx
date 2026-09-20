@@ -89,7 +89,7 @@ const billingStages: BillingStage[] = [
 
 const kindBadgeClass: Record<BillingStageKind, string> = {
   bookend: "rounded-full bg-ink-elevated text-foreground-muted",
-  gate: "rounded-full bg-accent-soft text-accent ring-2 ring-accent/50",
+  gate: "rounded-full border border-accent/50 bg-ink-elevated text-accent",
   step: "rounded-lg bg-ink-elevated text-foreground-muted",
 };
 
@@ -290,7 +290,7 @@ export function BillingSection() {
   };
 
   return (
-    <section className="border-b border-line bg-ink py-20 sm:py-28" id="billing">
+    <section className="border-b border-line bg-ink-elevated py-20 sm:py-28" id="billing">
       <Container className="flex flex-col gap-10">
         <SectionHeading
           eyebrow="Billing preparation"

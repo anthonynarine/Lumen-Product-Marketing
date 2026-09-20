@@ -14,7 +14,7 @@ const securityPillars = [
 
 export function SecuritySection() {
   return (
-    <section className="border-b border-line bg-ink py-20 sm:py-28" id="security">
+    <section className="border-b border-line bg-ink-elevated py-20 sm:py-28" id="security">
       <Container className="grid gap-14 lg:grid-cols-[1fr_1fr] lg:items-center">
         <div className="flex flex-col gap-6">
           <SectionHeading

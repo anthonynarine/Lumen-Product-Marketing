@@ -15,8 +15,8 @@ export default function Home() {
   return (
     <>
       <HeroSection />
-      <WorkflowSection />
       <VascularFirstSection />
+      <WorkflowSection />
       <ImagingSection />
       <AIKnowledgeSection />
       <BillingSection />

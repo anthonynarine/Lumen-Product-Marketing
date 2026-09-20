@@ -47,7 +47,7 @@ function SolderDot({
 
 export function InteroperabilitySection() {
   return (
-    <section className="border-b border-line bg-ink-elevated py-20 sm:py-28" id="interoperability">
+    <section className="border-b border-line bg-ink py-20 sm:py-28" id="interoperability">
       <Container className="flex flex-col gap-12">
         <SectionHeading
           eyebrow="Interoperability"
@@ -58,7 +58,7 @@ export function InteroperabilitySection() {
         <div className="rounded-2xl border border-line-strong bg-ink-card p-6 sm:p-10">
           <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:gap-0">
             {/* Lumen core */}
-            <div className="relative mx-auto flex w-full max-w-[16rem] shrink-0 flex-col items-center gap-2 rounded-2xl border-2 border-accent/50 bg-accent-soft px-6 py-8 text-center lg:mx-0">
+            <div className="relative mx-auto flex w-full max-w-[16rem] shrink-0 flex-col items-center gap-2 rounded-2xl border-2 border-accent/50 bg-ink-card px-6 py-8 text-center lg:mx-0">
               <Cpu aria-hidden="true" className="h-6 w-6 text-accent" />
               <span className="text-sm font-semibold text-foreground">Lumen</span>
               <span className="text-[11px] text-foreground-muted">Reporting &amp; imaging core</span>

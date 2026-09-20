@@ -17,39 +17,71 @@ export function NavBar() {
       <Container className="flex h-16 items-center justify-between">
         <Link
           href="/"
-          className="flex items-center gap-2 text-lg font-semibold tracking-tight text-foreground"
+          className="flex items-center text-sm font-bold uppercase tracking-[0.28em] text-foreground"
           onClick={() => setIsOpen(false)}
+          style={{
+            animationName: "soft-pop",
+            animationDuration: "1400ms",
+            animationTimingFunction: "cubic-bezier(0.16, 1, 0.3, 1)",
+            animationFillMode: "both",
+          }}
         >
-          <span
-            aria-hidden="true"
-            className="inline-block h-2.5 w-2.5 rounded-full bg-accent"
-          />
           {siteConfig.name}
+          <span className="text-accent">.</span>
         </Link>
 
-        <nav aria-label="Primary" className="hidden items-center gap-8 md:flex">
-          {primaryNavLinks.map((link) => {
-            const isActive = pathname === link.href;
-            return (
-              <Link
-                key={link.href}
-                href={link.href}
-                aria-current={isActive ? "page" : undefined}
-                className={`text-sm font-medium transition-colors ${
-                  isActive ? "text-foreground" : "text-foreground-muted hover:text-foreground"
-                }`}
-              >
-                {link.label}
-              </Link>
-            );
-          })}
-        </nav>
+        <div className="hidden items-center gap-10 md:flex">
+          <nav aria-label="Primary" className="flex items-center gap-8">
+            {primaryNavLinks.map((link, index) => {
+              const isActive = pathname === link.href;
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  aria-current={isActive ? "page" : undefined}
+                  className={`text-sm font-medium transition-colors ${
+                    isActive ? "text-foreground" : "text-foreground-muted hover:text-foreground"
+                  }`}
+                  style={{
+                    animationName: "soft-pop",
+                    animationDuration: "1400ms",
+                    animationTimingFunction: "cubic-bezier(0.16, 1, 0.3, 1)",
+                    animationFillMode: "both",
+                    animationDelay: `${260 + index * 110}ms`,
+                  }}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
+          </nav>
 
-        <div className="hidden items-center gap-3 md:flex">
-          <ThemeToggle />
-          <Button href={ctaLinks.demo.href} variant="primary" className="px-5 py-2.5">
-            {ctaLinks.demo.label}
-          </Button>
+          <div className="flex items-center gap-3">
+            <div
+              style={{
+                animationName: "soft-pop",
+                animationDuration: "1400ms",
+                animationTimingFunction: "cubic-bezier(0.16, 1, 0.3, 1)",
+                animationFillMode: "both",
+                animationDelay: `${260 + primaryNavLinks.length * 110}ms`,
+              }}
+            >
+              <ThemeToggle />
+            </div>
+            <div
+              style={{
+                animationName: "soft-pop",
+                animationDuration: "1400ms",
+                animationTimingFunction: "cubic-bezier(0.16, 1, 0.3, 1)",
+                animationFillMode: "both",
+                animationDelay: `${260 + primaryNavLinks.length * 110 + 110}ms`,
+              }}
+            >
+              <Button href={ctaLinks.demo.href} variant="accent" className="px-4 py-2 text-sm">
+                {ctaLinks.demo.label}
+              </Button>
+            </div>
+          </div>
         </div>
 
         <div className="flex items-center gap-2 md:hidden">
@@ -104,7 +136,7 @@ export function NavBar() {
           </ul>
           <Button
             href={ctaLinks.demo.href}
-            variant="primary"
+            variant="accent"
             className="mt-4 w-full"
           >
             {ctaLinks.demo.label}

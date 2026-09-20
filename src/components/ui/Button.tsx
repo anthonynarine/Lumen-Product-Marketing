@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { type ReactNode } from "react";
 
-type ButtonVariant = "primary" | "secondary" | "ghost";
+type ButtonVariant = "primary" | "secondary" | "ghost" | "accent";
 
 type ButtonProps = {
   children: ReactNode;
@@ -18,6 +18,8 @@ const variantClasses: Record<ButtonVariant, string> = {
   secondary:
     "bg-transparent text-foreground border border-line-strong hover:border-foreground/40 hover:bg-hover",
   ghost: "bg-transparent text-foreground-muted hover:text-foreground",
+  accent:
+    "bg-accent text-accent-foreground border border-accent hover:bg-accent/90 shadow-[0_10px_40px_-10px_rgb(var(--color-accent-rgb)/0.55)]",
 };
 
 export function Button({ href, onClick, children, variant = "primary", className = "", type = "button" }: ButtonProps) {

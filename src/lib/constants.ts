@@ -17,7 +17,7 @@ export const primaryNavLinks: NavLink[] = [
   { href: "/ai", label: "AI Knowledge" },
   { href: "/interoperability", label: "Interoperability" },
   { href: "/security", label: "Security" },
-  { href: "/about", label: "About" },
+  { href: "/about", label: "About Us" },
 ];
 
 export const footerNavLinks: NavLink[] = [

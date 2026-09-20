@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Container } from "@/components/ui/Container";
+import { ParticleField } from "@/components/ui/ParticleField";
 
 // Positioning: vascular is not Lumen's scope, it's Lumen's first *engine*.
 // The factory/engine split — what is built once versus what each specialty
@@ -68,6 +69,10 @@ const DOMAINS: { name: string; exams: DomainExam[]; at: Placement }[] = [
   },
 ];
 
+// The one domain currently plugged in and running — drives which wall of the
+// engine gets its border broken open for that domain's duct to pass through.
+const LIVE_DOMAIN = DOMAINS.find((domain) => domain.exams.some((exam) => exam.live));
+
 export function VascularFirstSection() {
   return (
     <section className="border-b border-line bg-ink-elevated py-20 sm:py-28" id="vascular">
@@ -129,11 +134,29 @@ export function VascularFirstSection() {
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-[1fr_minmax(17rem,1.45fr)_1fr] lg:grid-rows-[auto_auto_auto_auto] lg:gap-x-16 lg:gap-y-6">
               {/* The core. Spans the three domain rows so each side connector
                   meets it at its own height. */}
-              <div className="relative flex flex-col items-center justify-center gap-2 overflow-hidden rounded-2xl border border-accent/50 bg-ink px-6 py-8 text-center shadow-[0_0_45px_-28px_rgb(var(--color-accent-rgb)/0.5)] sm:col-span-2 lg:col-span-1 lg:col-start-2 lg:row-start-1 lg:row-span-3">
-                <span
-                  aria-hidden="true"
-                  className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgb(var(--color-accent-rgb)/0.12),rgb(var(--color-accent-rgb)/0.03)_50%,transparent_70%)]"
-                />
+              <div className="relative flex flex-col items-center justify-center gap-2 rounded-2xl border border-accent/50 bg-ink px-6 py-8 text-center shadow-[0_0_45px_-28px_rgb(var(--color-accent-rgb)/0.5)] sm:col-span-2 lg:col-span-1 lg:col-start-2 lg:row-start-1 lg:row-span-3">
+                <div className="absolute inset-0 overflow-hidden rounded-2xl">
+                  <ParticleField count={220} />
+                  <span
+                    aria-hidden="true"
+                    className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgb(var(--color-accent-rgb)/0.12),rgb(var(--color-accent-rgb)/0.03)_50%,transparent_70%)]"
+                  />
+                </div>
+                {LIVE_DOMAIN ? (
+                  // Sits on the border itself (not just inside it), which is
+                  // only possible because this box no longer clips its own
+                  // children — the particle canvas above is what's clipped now.
+                  <span
+                    aria-hidden="true"
+                    className={`hidden lg:block lg:absolute lg:bg-ink ${
+                      LIVE_DOMAIN.at.side === "left"
+                        ? "lg:-left-px lg:top-1/2 lg:h-11 lg:w-[3px] lg:-translate-y-1/2"
+                        : LIVE_DOMAIN.at.side === "right"
+                          ? "lg:-right-px lg:top-1/2 lg:h-11 lg:w-[3px] lg:-translate-y-1/2"
+                          : "lg:-bottom-px lg:left-1/2 lg:h-[3px] lg:w-11 lg:-translate-x-1/2"
+                    }`}
+                  />
+                ) : null}
                 <h4 className="relative text-sm font-semibold uppercase tracking-[0.15em] text-accent">
                   The vascular engine
                 </h4>
@@ -158,12 +181,28 @@ export function VascularFirstSection() {
 
                 // Each connector runs from the card's inner edge across the
                 // grid gap to the core: 4rem horizontally, 1.25rem vertically.
-                const connector =
+                const connectorPosition =
                   side === "left"
-                    ? "lg:left-full lg:top-1/2 lg:h-px lg:w-16"
+                    ? "lg:left-full lg:top-1/2"
                     : side === "right"
-                      ? "lg:right-full lg:top-1/2 lg:h-px lg:w-16"
-                      : "lg:bottom-full lg:left-1/2 lg:h-5 lg:w-px";
+                      ? "lg:right-full lg:top-1/2"
+                      : "lg:bottom-full lg:left-1/2";
+                const isVerticalConnector = side === "bottom";
+                const connectorSize = isVerticalConnector ? "lg:h-5 lg:w-px" : "lg:h-px lg:w-16";
+                const connector = `${connectorPosition} ${connectorSize}`;
+                // A ready domain's duct has two rails, like a real pipe wall,
+                // running the full gap and touching both the card and the
+                // engine flush. Each container's own border is broken open
+                // exactly where the duct meets it (see the wall-break patches
+                // below), so the rails read as running straight through a cut
+                // in the wall rather than stopping at it. Real particles drift
+                // through the channel between the rails, not a CSS dot.
+                const ductSize = isVerticalConnector
+                  ? "lg:h-5 lg:w-10 lg:-translate-x-1/2"
+                  : "lg:h-10 lg:w-16 lg:-translate-y-1/2";
+                const railClass = isVerticalConnector
+                  ? "absolute inset-y-0 w-px bg-accent/70 shadow-[0_0_6px_-1px_rgb(var(--color-accent-rgb)/0.6)]"
+                  : "absolute inset-x-0 h-px bg-accent/70 shadow-[0_0_6px_-1px_rgb(var(--color-accent-rgb)/0.6)]";
                 const node =
                   side === "left"
                     ? "lg:left-full lg:top-1/2 lg:-translate-x-1/2 lg:-translate-y-1/2"
@@ -173,12 +212,21 @@ export function VascularFirstSection() {
 
                 return (
                   <div key={domain.name} className={`relative ${cell}`}>
-                    <span
-                      aria-hidden="true"
-                      className={`hidden lg:block lg:absolute ${connector} ${
-                        hasLive ? "bg-accent" : "bg-line-strong"
-                      }`}
-                    />
+                    {hasLive ? (
+                      <div
+                        aria-hidden="true"
+                        className={`hidden lg:block lg:absolute lg:overflow-hidden ${connectorPosition} ${ductSize}`}
+                      >
+                        <span className={isVerticalConnector ? `${railClass} left-0` : `${railClass} top-0`} />
+                        <span className={isVerticalConnector ? `${railClass} right-0` : `${railClass} bottom-0`} />
+                        <ParticleField count={40} />
+                      </div>
+                    ) : (
+                      <span
+                        aria-hidden="true"
+                        className={`hidden lg:block lg:absolute ${connector} bg-line-strong`}
+                      />
+                    )}
                     <span
                       aria-hidden="true"
                       className={`hidden lg:block lg:absolute lg:h-1.5 lg:w-1.5 lg:rounded-full ${node} ${
@@ -187,18 +235,39 @@ export function VascularFirstSection() {
                     />
 
                     <div
-                      className={`hover-card flex h-full flex-col justify-center gap-2 rounded-xl border p-3 text-center transition ${
+                      className={`hover-card relative flex h-full flex-col justify-center gap-2 rounded-xl border p-3 text-center transition ${
                         hasLive ? "border-accent bg-ink-elevated" : "border-line-strong bg-ink"
                       }`}
                     >
+                      {hasLive ? (
+                        <>
+                          <div className="absolute inset-0 overflow-hidden rounded-xl">
+                            <ParticleField count={30} />
+                          </div>
+                          {/* On the border itself, not just inside it — this
+                              box no longer clips its own children, so the
+                              patch can actually sit on top of the border
+                              pixel instead of stopping short of it. */}
+                          <span
+                            aria-hidden="true"
+                            className={`absolute bg-ink-elevated ${
+                              side === "left"
+                                ? "-right-px top-1/2 h-11 w-[3px] -translate-y-1/2"
+                                : side === "right"
+                                  ? "-left-px top-1/2 h-11 w-[3px] -translate-y-1/2"
+                                  : "-top-px left-1/2 h-[3px] w-11 -translate-x-1/2"
+                            }`}
+                          />
+                        </>
+                      ) : null}
                       <h5
-                        className={`text-[11px] font-semibold uppercase leading-tight tracking-[0.08em] ${
+                        className={`relative text-[11px] font-semibold uppercase leading-tight tracking-[0.08em] ${
                           hasLive ? "text-accent" : "text-foreground"
                         }`}
                       >
                         {domain.name}
                       </h5>
-                      <ul className="flex flex-col gap-1">
+                      <ul className="relative flex flex-col gap-1">
                         {domain.exams.map((exam) => (
                           <li
                             key={exam.name}
@@ -217,7 +286,7 @@ export function VascularFirstSection() {
                         ))}
                       </ul>
                       {hasLive ? (
-                        <span className="mt-auto inline-flex items-center justify-center self-center rounded-full border border-accent/50 bg-ink px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-accent">
+                        <span className="relative mt-auto inline-flex items-center justify-center self-center rounded-full border border-accent/50 bg-ink px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-accent">
                           live
                         </span>
                       ) : null}

@@ -74,17 +74,19 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         />
       </head>
       <body className="flex min-h-full flex-col bg-ink text-foreground">
-        <a
-          href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-accent focus:px-4 focus:py-2 focus:text-accent-foreground"
-        >
-          Skip to main content
-        </a>
-        <NavBar />
-        <main id="main-content" className="flex-1">
-          {children}
-        </main>
-        <Footer />
+        <div className="relative z-[1] flex min-h-full flex-1 flex-col">
+          <a
+            href="#main-content"
+            className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-accent focus:px-4 focus:py-2 focus:text-accent-foreground"
+          >
+            Skip to main content
+          </a>
+          <NavBar />
+          <main id="main-content" className="flex-1">
+            {children}
+          </main>
+          <Footer />
+        </div>
       </body>
     </html>
   );

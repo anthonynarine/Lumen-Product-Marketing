@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { PageHero } from "@/components/layout/PageHero";
 import { CTABanner } from "@/components/layout/CTABanner";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -124,33 +125,63 @@ const tenantInvariants = [
 const securityQA = [
   {
     question: "How do you handle authentication?",
+    chapter: "identity-and-authorization",
     answer:
       "Gait — a dedicated identity and security platform built specifically to protect Lumen — authenticates users and manages session security. Lumen validates that trusted identity, then performs its own independent tenant and clinical authorization — a login never grants access by itself.",
   },
   {
     question: "How do you prevent one customer from seeing another customer's data?",
+    chapter: "organization-and-facility",
     answer:
       "Organization is a mandatory, server-side tenant boundary. Reads are scoped to the caller's organization before they run, writes are authorized before they execute, and the browser cannot declare its own organization to gain access.",
   },
   {
     question: "What about multiple hospitals or sites in one health system?",
+    chapter: "organization-and-facility",
     answer:
       "One organization can contain multiple facilities. Facility scope is enforced independently, underneath the organization boundary — so a health system can run on one platform while keeping each site's staff and workflow configuration separate.",
   },
   {
     question: "Can AI change production or clinical data on its own?",
+    chapter: "clinical-safety-boundary",
     answer:
       "No. Lumen's AI layer explains and retrieves approved protocols and criteria — it never invents them, and it says so when it doesn't know. It cannot change a signed interpretation, reassign a patient's images, or finalize a report on a clinician's behalf.",
   },
   {
     question: "Do you use automated security monitoring?",
+    chapter: "automation-and-human-approval",
     answer:
       "Yes — Gait includes automated investigation agents that watch for anomalies, reproduce suspected issues, and propose fixes. Intelligence doesn't grant itself authority, though: every proposed fix is independently validated and still requires explicit human approval before anything is deployed.",
   },
   {
     question: "Where does patient data actually live?",
+    chapter: "deployment-and-network",
     answer:
       "Lumen runs in AWS behind a load balancer, with application and database services deployed inside a private network — neither has a public IP. Public traffic terminates at the load balancer over HTTPS; production access to the private network itself goes through a VPN, never directly at the database or internal services.",
+  },
+];
+
+const handbookEntryPoints = [
+  {
+    eyebrow: "Start from a question",
+    title: "All chapters, indexed by what people actually ask",
+    description:
+      "Twenty questions, each answered in a few sentences and linked to the chapter behind it.",
+    href: "/security/handbook",
+  },
+  {
+    eyebrow: "HIPAA",
+    title: "What HIPAA is — and what it is not",
+    description:
+      "The four rules, the required-versus-addressable distinction, and why no software can be HIPAA certified.",
+    href: "/security/handbook/what-hipaa-is-and-is-not",
+  },
+  {
+    eyebrow: "Tenancy",
+    title: "The isolation rules we treat as non-negotiable",
+    description:
+      "Twelve invariants stated precisely enough to be tested — and to be held to in a security review.",
+    href: "/security/handbook/tenant-isolation-invariants",
   },
 ];
 
@@ -266,10 +297,17 @@ export default function SecurityPage() {
           />
           <div className="grid gap-4 sm:grid-cols-2">
             {securityQA.map((item) => (
-              <div key={item.question} className="rounded-xl border border-line-strong bg-ink-card p-6">
+              <Link
+                key={item.question}
+                href={`/security/handbook/${item.chapter}`}
+                className="hover-card group flex flex-col rounded-xl border border-line-strong bg-ink-card p-6"
+              >
                 <h3 className="text-sm font-semibold text-foreground">{item.question}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-foreground-muted">{item.answer}</p>
-              </div>
+                <span className="mt-3 text-sm text-button underline-offset-4 group-hover:underline">
+                  Read the full chapter &rarr;
+                </span>
+              </Link>
             ))}
           </div>
 
@@ -283,6 +321,39 @@ export default function SecurityPage() {
               does not process, store, or transmit protected health information (PHI). Any
               screenshots or examples shown across this site use synthetic data only.
             </p>
+            <Link
+              href="/security/handbook/what-hipaa-is-and-is-not"
+              className="mt-4 inline-block text-sm text-button underline-offset-4 hover:underline"
+            >
+              What HIPAA is &mdash; and what it is not &rarr;
+            </Link>
+          </div>
+        </Container>
+      </section>
+
+      <section className="border-b border-line bg-ink py-16 sm:py-24">
+        <Container className="flex flex-col gap-10">
+          <SectionHeading
+            eyebrow="Go deeper"
+            title="The whole security model, written out and readable"
+            description="Everything on this page is the summary. The handbook is the full version — what HIPAA is and is not, how tenant isolation works, how a single request gets authorized, and how each control is proven. No form, no login, no sales call first."
+          />
+          <div className="grid gap-4 sm:grid-cols-3">
+            {handbookEntryPoints.map((entry) => (
+              <Link
+                key={entry.href}
+                href={entry.href}
+                className="hover-card group flex flex-col rounded-xl border border-line-strong bg-ink-card p-6"
+              >
+                <span className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">
+                  {entry.eyebrow}
+                </span>
+                <h3 className="mt-3 text-sm font-semibold text-foreground">{entry.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-foreground-muted">
+                  {entry.description}
+                </p>
+              </Link>
+            ))}
           </div>
         </Container>
       </section>

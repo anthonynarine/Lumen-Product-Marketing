@@ -45,12 +45,19 @@ src/
 │   ├── ai/page.tsx
 │   ├── interoperability/page.tsx
 │   ├── security/page.tsx
+│   ├── security/handbook/page.tsx        # Question-first handbook index
+│   ├── security/handbook/[slug]/page.tsx # Chapter reader (generateStaticParams)
 │   └── contact/page.tsx
 │
 ├── features/
-│   └── home/
-│       ├── parts/          # One component per homepage section (Hero, Workflow, ...)
-│       └── index.ts         # Barrel export consumed by app/page.tsx
+│   ├── home/
+│   │   ├── parts/          # One component per homepage section (Hero, Workflow, ...)
+│   │   └── index.ts         # Barrel export consumed by app/page.tsx
+│   └── handbook/
+│       ├── chapters/       # Chapter content as typed blocks, one file per group
+│       ├── questions.ts    # Question-first index mapping questions to chapters
+│       ├── ChapterBody.tsx # Block renderer — no markdown dependency
+│       └── ChapterNav.tsx  # Grouped chapter sidebar
 │
 ├── components/
 │   ├── navigation/          # NavBar (client component — mobile menu state)
@@ -78,6 +85,18 @@ Key decisions:
   `SectionHeading`, `Container`, `Badge`, `Button`). Homepage sections in `features/home/`
   are not imported by other routes — the homepage narrative and the deep-dive page narrative
   are allowed to diverge without one edit breaking the other.
+- **`features/handbook/` owns the security handbook content.** Chapters are authored as typed
+  content blocks (`paragraph`, `list`, `steps`, `table`, `split`, `note`, …) rendered by
+  `ChapterBody.tsx`, not as markdown — the site has no markdown renderer and adding one for a
+  hand-curated corpus is not worth the dependency. Chapter order and numbering come from the
+  single `chapters/index.ts` array; adding a chapter there is enough to make it appear in the
+  index, the sidebar, prev/next navigation, and `generateStaticParams`.
+- **The handbook is curated, not a dump of the internal reference.** It is derived from
+  `Lumen_Security_Tenancy_Architecture_Handbook.md`, but roadmap, internal engineering
+  guidance, detailed threat modeling, the security-event catalog, and the future-modules list
+  are deliberately not published — they either disclose what is not yet built or read as
+  internal notes. Keep that boundary when adding chapters.
+
 - **Design tokens live in `globals.css`, mapped through Tailwind v4's `@theme inline`.**
   Colors (`ink`, `ink-elevated`, `ink-card`, `paper`, `accent`, `foreground`, `line`, …) are
   CSS custom properties, exposed as Tailwind utilities (`bg-ink-card`, `text-accent`,

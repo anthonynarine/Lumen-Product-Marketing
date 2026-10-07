@@ -37,6 +37,8 @@ and [`PROJECT.md`](PROJECT.md) for the full architectural writeup.
 | `/ai` | The AI clinical knowledge layer |
 | `/interoperability` | EMR / HL7 / DICOM / PACS / billing system connections |
 | `/security` | Tenancy, facility scoping, and HIPAA-aligned architecture |
+| `/security/handbook` | Security & HIPAA handbook — question-first index of all chapters |
+| `/security/handbook/[slug]` | An individual handbook chapter (statically generated) |
 | `/contact` | Request a demo / reach the team |
 
 ## Tech stack

@@ -22,6 +22,7 @@ export const primaryNavLinks: NavLink[] = [
 
 export const footerNavLinks: NavLink[] = [
   ...primaryNavLinks,
+  { href: "/security/handbook", label: "Security Handbook" },
   { href: "/contact", label: "Contact" },
 ];
 

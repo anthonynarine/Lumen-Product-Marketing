@@ -3,6 +3,7 @@ import { PageHero } from "@/components/layout/PageHero";
 import { CTABanner } from "@/components/layout/CTABanner";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Container } from "@/components/ui/Container";
+import { SecurityArchitectureMap } from "./SecurityArchitectureMap";
 
 export const metadata: Metadata = {
   title: "Security",
@@ -222,6 +223,17 @@ export default function SecurityPage() {
       <section className="border-b border-line bg-ink py-16 sm:py-24">
         <Container className="flex flex-col gap-10">
           <SectionHeading
+            eyebrow="The architecture at a glance"
+            title="Where every boundary sits"
+            description="Each part of Lumen sits behind its own boundary, and each one checks a request again instead of trusting the part in front of it."
+          />
+          <SecurityArchitectureMap />
+        </Container>
+      </section>
+
+      <section className="border-b border-line bg-ink-elevated py-16 sm:py-24">
+        <Container className="flex flex-col gap-10">
+          <SectionHeading
             eyebrow="How a request actually gets checked"
             title="Five gates, in order — not one decision"
             description="A request doesn't go straight from login to data. It narrows through identity, membership, facility, and role/state, in that order, before anything is read or written."
@@ -245,7 +257,7 @@ export default function SecurityPage() {
         </Container>
       </section>
 
-      <section className="border-b border-line bg-ink-elevated py-16 sm:py-24">
+      <section className="border-b border-line bg-ink py-16 sm:py-24">
         <Container className="flex flex-col gap-10">
           <SectionHeading
             eyebrow="How the layers divide responsibility"
@@ -273,7 +285,7 @@ export default function SecurityPage() {
         </Container>
       </section>
 
-      <section className="border-b border-line bg-ink py-16 sm:py-24">
+      <section className="border-b border-line bg-ink-elevated py-16 sm:py-24">
         <Container className="flex flex-col gap-10">
           <SectionHeading
             eyebrow="Tenant isolation"
@@ -291,7 +303,7 @@ export default function SecurityPage() {
         </Container>
       </section>
 
-      <section className="border-b border-line bg-ink-elevated py-16 sm:py-24">
+      <section className="border-b border-line bg-ink py-16 sm:py-24">
         <Container className="flex flex-col gap-10">
           <SectionHeading
             eyebrow="Data protection"
@@ -309,7 +321,7 @@ export default function SecurityPage() {
         </Container>
       </section>
 
-      <section className="border-b border-line bg-ink py-16 sm:py-24">
+      <section className="border-b border-line bg-ink-elevated py-16 sm:py-24">
         <Container className="flex flex-col gap-10">
           <SectionHeading
             eyebrow="Security review"

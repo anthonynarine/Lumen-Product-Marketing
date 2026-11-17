@@ -341,7 +341,7 @@ export default function SecurityPage() {
               A note on HIPAA
             </h3>
             <p className="mt-3 max-w-2xl text-sm leading-relaxed text-foreground-muted">
-              Lumen's architecture is built with HIPAA safeguards in mind. This site does not
+              Lumen&apos;s architecture is built with HIPAA safeguards in mind. This site does not
               claim HIPAA certification, a signed Business Associate Agreement, or a completed
               third-party audit, and it does not process, store, or transmit protected health
               information (PHI). Any screenshots or examples shown across this site use synthetic

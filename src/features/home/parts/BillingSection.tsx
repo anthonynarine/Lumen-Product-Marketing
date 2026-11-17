@@ -250,15 +250,17 @@ export function BillingSection() {
 
   const activeIndex = billingStages.findIndex((stage) => stage.code === selectedCode);
 
-  // Tracks the index from before the latest selection change, so the train
-  // animation can figure out which single segment was just crossed and in
-  // which direction — the ref only updates after render, so during the
-  // render where activeIndex just changed, this still holds the old value.
-  const previousIndexRef = useRef(activeIndex);
-  const previousIndex = previousIndexRef.current;
-  useEffect(() => {
-    previousIndexRef.current = activeIndex;
-  }, [activeIndex]);
+  // The index from before the latest selection change, so the train animation
+  // can figure out which single segment was just crossed and in which
+  // direction. Adjusted during render (React's "storing information from
+  // previous renders" pattern) rather than read from a ref, which React 19
+  // forbids during render.
+  const [trackedIndex, setTrackedIndex] = useState(activeIndex);
+  const [previousIndex, setPreviousIndex] = useState(activeIndex);
+  if (trackedIndex !== activeIndex) {
+    setPreviousIndex(trackedIndex);
+    setTrackedIndex(activeIndex);
+  }
 
   const steppedByOne = previousIndex !== -1 && activeIndex !== -1 && Math.abs(activeIndex - previousIndex) === 1;
   const travelSegmentIndex = steppedByOne ? Math.min(activeIndex, previousIndex) : -1;

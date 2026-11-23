@@ -1,0 +1,83 @@
+# Foundry capability vocabulary.
+#
+# Roles may only list capabilities defined here (validated by `foundry validate`).
+# Capabilities with `grantable_to_agents: false` may never appear in a role: they belong
+# to humans or to deterministic executors. "Intelligence does not grant authority."
+#
+# `*.write` is a pattern: `<domain>.write` means "write the paths owned by <domain>", where
+# <domain> is a role id or a component id from .foundry/project/components.yaml.
+capabilities:
+  # --- read & run -------------------------------------------------------------------
+  - id: repo.read
+    description: Read any tracked file and the Git history.
+  - id: tests.run
+    description: Run validation commands (tests, lint, type checks, builds) from the project model.
+  - id: services.run
+    description: Start local development services (e.g. docker compose profiles).
+  - id: security.scan
+    description: Run security tooling (dependency audit, static analysis, secret scan).
+
+  # --- produce -------------------------------------------------------------------------
+  - id: "*.write"
+    description: Modify paths owned by a domain (role id or component id), within the workstream's `owns`.
+    pattern: true
+  - id: migrations.create
+    description: Create schema or data migrations inside owned paths.
+  - id: dependencies.add
+    description: Add or upgrade third-party dependencies.
+  - id: git.commit.own_branch
+    description: Commit to the agent's own agent/<role>/<task-slug> branch.
+  - id: artifacts.create
+    description: Submit artifacts (plans, contracts, reports, commits) for the agent's workstream.
+  - id: findings.create
+    description: Raise findings (security, QA) as artifacts.
+  - id: review.perform
+    description: Review other workstreams' artifacts and produce review artifacts.
+
+  # --- coordinate (orchestrator) ------------------------------------------------------
+  - id: tasks.manage
+    description: Create tasks, define workstreams, set dependencies, request state transitions.
+  - id: session.mint
+    description: Mint, renew or end agent sessions (FND-6.3 D17).
+  - id: runtimes.manage
+    description: Create workspaces and start, stop, or resume agent runtimes.
+  - id: artifacts.accept
+    description: Accept or reject submitted artifacts.
+  - id: project_model.write
+    description: Update the Project Model (.foundry/project/) after verifying it against the code.
+  - id: decisions.record
+    description: Record architecture decisions in .foundry/decisions/.
+  - id: branches.integrate
+    description: Merge agent branches into an integration branch.
+  - id: approval.request
+    description: Request a human approval for a gate.
+
+  # --- gated or human-only -------------------------------------------------------------
+  - id: main.merge
+    description: Merge into the main branch. Gated by policy (evidence + human approval).
+  - id: remote.push
+    description: Push branches to a remote.
+  - id: history.rewrite
+    description: Rebase, amend, or force-push branches others may depend on.
+  - id: ci.modify
+    description: Change CI/CD pipelines or their security settings.
+  - id: nonproduction.deploy
+    description: Deploy to a non-production environment.
+  - id: production.deploy
+    description: Deploy to production. Reserved for a future deterministic executor.
+    grantable_to_agents: false
+  - id: policy.modify
+    description: Change .foundry/policy/ or security controls.
+    grantable_to_agents: false
+  - id: roles.modify
+    description: Change role definitions (an agent widening its own authority).
+    grantable_to_agents: false
+  - id: secrets.manage
+    description: Create, read, rotate, or move secrets and credentials.
+    grantable_to_agents: false
+  - id: delegation.grant
+    description: Sign a scoped, expiring delegation grant (FND-6.3 D18). Owner by default.
+    grantable_to_agents: false
+  - id: approval.grant
+    description: Grant an approval gate. Humans only.
+    grantable_to_agents: false

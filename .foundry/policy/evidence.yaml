@@ -1,0 +1,45 @@
+# Foundry evidence vocabulary.
+#
+# Tasks (completion.evidence) and gates (requires_evidence) name evidence by these ids.
+# Each id is satisfied by an ACCEPTED artifact of the given kind on the task.
+# "DONE = implementation + required evidence + validation + policy satisfaction."
+evidence:
+  - id: requirements
+    description: Agreed requirements for the task.
+    artifact_kind: requirements
+  - id: plan
+    description: An accepted plan or design for the task.
+    artifact_kind: plan
+  - id: contract
+    description: An API, event, or schema contract other workstreams rely on.
+    artifact_kind: contract
+  - id: commit
+    description: Implementation committed on an identifiable branch and commit.
+    artifact_kind: commit
+  - id: tests
+    description: Test run with recorded command, scope, and passing result.
+    artifact_kind: test-report
+  - id: typecheck
+    description: Type check run with recorded command and passing result.
+    artifact_kind: typecheck-report
+  - id: lint
+    description: Lint run with recorded command and passing result.
+    artifact_kind: lint-report
+  - id: migration
+    description: Migration with its reversibility described.
+    artifact_kind: migration
+  - id: review.code
+    description: Independent code review of the integrated change.
+    artifact_kind: code-review
+  - id: review.security
+    description: Independent security review, citing the doctrine rules checked.
+    artifact_kind: security-review
+  - id: qa
+    description: Independent QA validation against the completion criteria.
+    artifact_kind: qa-report
+  - id: docs
+    description: Documentation updated for the change.
+    artifact_kind: docs
+  - id: decision
+    description: Architecture decision recorded.
+    artifact_kind: decision

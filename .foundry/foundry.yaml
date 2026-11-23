@@ -1,0 +1,21 @@
+schema_version: 1
+name: Lumen-Product-Marketing
+task_prefix: LUM
+main_branch: main
+state_branch: foundry/state
+level: local
+providers:
+  orchestrator: claude
+  specialists: claude
+runtime:
+  engine: auto
+  image: localhost/foundry-worker:latest
+  allow_domains:
+  - api.anthropic.com
+  env_allow: []
+  memory: 4g
+  cpus: 2.0
+  pids_limit: 512
+sessions: 'off'
+tests: null
+checkpoint_legacy: null

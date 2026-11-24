@@ -76,7 +76,11 @@ per facility:
   and published literature, with a source citation on every threshold. Facilities can assign
   their own validated criteria per facility and protocol. Status: the built-in profiles are
   still in clinical review (`draft_requires_human_verification` in the Lumen app) and must be
-  labeled that way until a clinician verifies them.
+  labeled that way until a clinician verifies them. A 2026-11-23 source audit found carotid
+  matches the IAC Nov 2023 recommended criteria exactly and DVT largely follows SRU 2018 + the
+  ACR practice parameter; LE arterial and aorto-iliac are lab-defined with citation gaps, so
+  public copy may only say they are "informed by" published literature. Say IAC
+  "recommendations" for numeric criteria, never "requirements".
 - **Protocols:** built on IAC Vascular Testing standards, with custom and extended protocols
   per facility. Never imply IAC endorsement, or that using Lumen confers accreditation.
 - **Interpretation macros:** custom org-wide and facility-specific macros with physician

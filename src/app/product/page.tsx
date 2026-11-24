@@ -10,7 +10,7 @@ import { ClinicalContent } from "./ClinicalContent";
 export const metadata: Metadata = {
   title: "Product",
   description:
-    "A complete vascular lab, ready on day one: built-in diagnostic criteria drawn from current standards and published literature, IAC-based protocols, interpretation macros, and an AI assistant that answers from your lab's own approved rules.",
+    "A complete vascular lab, ready on day one: built-in diagnostic criteria based on current society recommendations and published literature, protocols built on IAC standards, interpretation macros, and an AI assistant that answers from your lab's own approved rules.",
 };
 
 const clinicianAudiences = [
@@ -72,7 +72,7 @@ export default function ProductPage() {
       <PageHero
         eyebrow="Product"
         title="A complete vascular lab, ready on day one"
-        description="Lumen ships with what a vascular lab needs to start reporting: diagnostic criteria drawn from current recommended standards and published literature, protocols built on IAC guidelines, and interpretation macros — all running on a structured reporting engine, with an AI assistant that answers from your lab's own approved rules. Keep the defaults, or make every one of them yours."
+        description="Lumen ships with what a vascular lab needs to start reporting: default diagnostic criteria based on current society recommendations and published literature, protocols built on IAC Vascular Testing standards, and interpretation macros — all running on a structured reporting engine, with an AI assistant that answers from your lab's own approved rules. Keep the defaults, or make every one of them yours."
       />
 
       <section className="border-b border-line bg-ink py-16 sm:py-24">

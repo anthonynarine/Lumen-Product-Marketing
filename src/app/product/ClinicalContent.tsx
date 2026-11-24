@@ -4,7 +4,10 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 // Claims here must match the Lumen app (lumen_reports/report_template/ and
 // reports/models/macro.py on main). As of 2026-11-23: built-in criteria profiles exist
 // for carotid, LE venous (DVT), LE arterial, and aorto-iliac, all still marked
-// draft_requires_human_verification ("In clinical review" below). Custom macros with an
+// draft_requires_human_verification ("In clinical review" below). A 2026-11-23 source
+// audit confirmed carotid matches IAC Nov 2023 exactly and DVT largely follows SRU 2018 +
+// ACR; LE arterial and aorto-iliac are lab-defined with citation gaps, so they are only
+// "informed by" literature here. Don't strengthen these claims until the app is fixed. Custom macros with an
 // approval flow are built; built-in macros are not ("Planned"). Remove a tag only after
 // checking the code.
 
@@ -21,7 +24,7 @@ const rows: Row[] = [
   {
     title: "Diagnostic criteria",
     shipsWith:
-      "Default criteria for carotid, lower-extremity venous, lower-extremity arterial, and aorto-iliac exams, drawn from current society recommendations and published literature. Every threshold carries the source it came from.",
+      "Default criteria for four exams. Carotid follows the IAC Vascular Testing 2023 recommended criteria; lower-extremity DVT follows the SRU 2018 consensus and the ACR–AIUM–SPR–SRU practice parameter; lower-extremity arterial and aorto-iliac defaults are informed by published literature. Every rule records where it came from.",
     shipsWithTag: "In clinical review",
     yoursToAdd:
       "Your lab's own validated criteria, assigned per facility and per protocol. Each version is pinned to the exams read against it, so a report always shows which criteria were in force.",
@@ -29,7 +32,8 @@ const rows: Row[] = [
   {
     title: "Protocols",
     shipsWith:
-      "Exam protocols built on IAC Vascular Testing standards, so the steps a technologist follows start from the accreditation baseline.",
+      "Exam protocols built on the IAC Vascular Testing Standards' minimum requirements, so the steps a technologist follows start from the accreditation baseline.",
+    shipsWithTag: "In clinical review",
     yoursToAdd:
       "Custom and extended protocols for how your lab actually scans, layered on the baseline per facility.",
   },
@@ -99,8 +103,9 @@ export function ClinicalContent() {
       </div>
 
       <p className="text-sm leading-relaxed text-foreground-muted">
-        Built-in criteria are in clinical review and are verified by a clinician before production use. Items marked
-        Planned are designed but not yet built. Lumen&apos;s protocols are built on IAC standards; using Lumen does not
+        Built-in criteria and protocols are in clinical review and are verified by a clinician before production use.
+        Items marked Planned are designed but not yet built. IAC requires each lab to adopt its own written criteria,
+        so Lumen&apos;s defaults are a starting point for that decision, not a substitute for it. Using Lumen does not
         itself confer IAC accreditation.
       </p>
     </Container>

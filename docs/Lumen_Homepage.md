@@ -66,6 +66,26 @@ exam definition declares:
 This is why Lumen can support additional specialties (starting with cardiac — see Section 10)
 without rebuilding the application underneath them.
 
+#### Built-in clinical content ("lab in a box", product page)
+
+Lumen ships with clinical content as well as the engine, and every piece of it can be adjusted
+per facility:
+
+- **Diagnostic criteria:** built-in default profiles for carotid, lower-extremity venous (DVT),
+  lower-extremity arterial, and aorto-iliac exams, drawn from current society recommendations
+  and published literature, with a source citation on every threshold. Facilities can assign
+  their own validated criteria per facility and protocol. Status: the built-in profiles are
+  still in clinical review (`draft_requires_human_verification` in the Lumen app) and must be
+  labeled that way until a clinician verifies them.
+- **Protocols:** built on IAC Vascular Testing standards, with custom and extended protocols
+  per facility. Never imply IAC endorsement, or that using Lumen confers accreditation.
+- **Interpretation macros:** custom org-wide and facility-specific macros with physician
+  approval are built. Built-in macros per exam and disease type are **planned** and must be
+  labeled that way until they ship.
+
+Do not name real facilities or customers when describing the new-practice-to-enterprise range
+(see Rule 5 below).
+
 ### 4. Vascular First — `VascularFirstSection.tsx`
 
 Lumen's first fully built specialty. Exam types: carotid, renal, lower-extremity arterial,

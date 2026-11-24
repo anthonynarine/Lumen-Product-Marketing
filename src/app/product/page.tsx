@@ -3,12 +3,14 @@ import { PageHero } from "@/components/layout/PageHero";
 import { CTABanner } from "@/components/layout/CTABanner";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Container } from "@/components/ui/Container";
+import Link from "next/link";
 import { ReportingEngine } from "./ReportingEngine";
+import { ClinicalContent } from "./ClinicalContent";
 
 export const metadata: Metadata = {
   title: "Product",
   description:
-    "A configurable clinical reporting engine: structured worksheets, measurement-driven workflows, automated calculations, and facility-specific diagnostic criteria.",
+    "A complete vascular lab, ready on day one: built-in diagnostic criteria drawn from current standards and published literature, IAC-based protocols, interpretation macros, and an AI assistant that answers from your lab's own approved rules.",
 };
 
 const clinicianAudiences = [
@@ -51,14 +53,31 @@ const capabilities = [
   },
 ];
 
+const audiences = [
+  {
+    title: "A new practice",
+    description:
+      "Open the doors with criteria, protocols, and macros already in place, and start reporting without an IT project. Lumen runs on its own from the first exam; images and hospital connections can come later.",
+  },
+  {
+    title: "An enterprise health system",
+    description:
+      "Load the criteria and protocols each facility has already approved, layer facility-specific macros on top, and connect to the EMR, interface engine, and PACS already in place — without forcing every site onto one set of rules.",
+  },
+];
+
 export default function ProductPage() {
   return (
     <>
       <PageHero
         eyebrow="Product"
-        title="A reporting factory built for structured clinical data"
-        description="Lumen replaces free-text, form-builder-style reporting with a configurable engine purpose-built for diagnostic workflow — from the first measurement to a signed, finalized report."
+        title="A complete vascular lab, ready on day one"
+        description="Lumen ships with what a vascular lab needs to start reporting: diagnostic criteria drawn from current recommended standards and published literature, protocols built on IAC guidelines, and interpretation macros — all running on a structured reporting engine, with an AI assistant that answers from your lab's own approved rules. Keep the defaults, or make every one of them yours."
       />
+
+      <section className="border-b border-line bg-ink py-16 sm:py-24">
+        <ClinicalContent />
+      </section>
 
       <section className="border-b border-line bg-ink-elevated py-16 sm:py-24">
         <Container className="flex flex-col gap-12">
@@ -99,6 +118,34 @@ export default function ProductPage() {
               </li>
             ))}
           </ul>
+        </Container>
+      </section>
+
+      <section className="border-b border-line bg-ink py-16 sm:py-24">
+        <Container className="flex flex-col gap-10">
+          <SectionHeading
+            eyebrow="Who it's for"
+            title="From a new practice to a multi-site health system"
+            description="The same Lumen at both ends. What changes is how much of it a facility keeps as shipped, and how much it connects to."
+          />
+          <div className="grid gap-6 md:grid-cols-2">
+            {audiences.map((audience) => (
+              <div
+                key={audience.title}
+                className="flex flex-col gap-3 rounded-2xl border border-line-strong bg-ink-card p-6 sm:p-8"
+              >
+                <h3 className="text-xl font-semibold text-foreground">{audience.title}</h3>
+                <p className="text-base leading-relaxed text-foreground-muted">{audience.description}</p>
+              </div>
+            ))}
+          </div>
+          <p className="text-sm text-foreground-muted">
+            See how Lumen connects at each stage on the{" "}
+            <Link href="/interoperability" className="text-button underline-offset-4 hover:underline">
+              integration levels
+            </Link>{" "}
+            page.
+          </p>
         </Container>
       </section>
 

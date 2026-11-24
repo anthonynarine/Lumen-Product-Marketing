@@ -43,6 +43,11 @@ export function HeroSection() {
             platform.
           </p>
 
+          <p className="text-base font-medium text-foreground">
+            Ships with the criteria and protocols a vascular lab runs on &mdash; ready to report
+            from day one.
+          </p>
+
           <div className="flex flex-wrap items-center gap-2">
             <span className="rounded-full border border-line-strong bg-ink-card px-3 py-1.5 text-xs font-medium text-foreground-muted">
               Solo physician practice

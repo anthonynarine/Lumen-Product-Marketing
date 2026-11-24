@@ -75,7 +75,7 @@ export default function ProductPage() {
         description="Lumen ships with what a vascular lab needs to start reporting: default diagnostic criteria based on current society recommendations and published literature, protocols built on IAC Vascular Testing standards, and interpretation macros — all running on a structured reporting engine, with an AI assistant that answers from your lab's own approved rules. Keep the defaults, or make every one of them yours."
       />
 
-      <section className="border-b border-line bg-ink py-16 sm:py-24">
+      <section className="scroll-mt-20 border-b border-line bg-ink py-16 sm:py-24" id="lab-in-a-box">
         <ClinicalContent />
       </section>
 

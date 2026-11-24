@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Container } from "@/components/ui/Container";
+import Link from "next/link";
 import { ParticleField } from "@/components/ui/ParticleField";
 
 // Positioning: vascular is not Lumen's scope, it's Lumen's first *engine*.
@@ -66,6 +67,30 @@ const DOMAINS: { name: string; exams: DomainExam[]; at: Placement }[] = [
     name: "Postoperative surveillance",
     exams: [{ name: "Bypass graft" }, { name: "Pseudoaneurysm" }, { name: "Targeted follow-up" }],
     at: { cell: "lg:col-start-2 lg:row-start-4", side: "bottom" },
+  },
+];
+
+// What ships inside the engine. Keep wording and tags in step with
+// src/app/product/ClinicalContent.tsx. "Planned" applies to the built-in macro
+// set only; custom macros with physician approval are built.
+const SHIPPED_CONTENT = [
+  {
+    title: "Diagnostic criteria",
+    description:
+      "Defaults for carotid, venous, arterial, and aorto-iliac exams, based on current society recommendations and published literature, with every rule's source on record.",
+    tag: "In clinical review",
+  },
+  {
+    title: "Protocols",
+    description:
+      "Built on IAC Vascular Testing minimums, plus custom protocols for how your lab actually scans.",
+    tag: "In clinical review",
+  },
+  {
+    title: "Interpretation macros",
+    description:
+      "A built-in set for each exam and disease type. Your own org-wide and facility macros work today, with physician approval.",
+    tag: "Built-in set planned",
   },
 ];
 
@@ -262,6 +287,44 @@ export function VascularFirstSection() {
         {/* Beat 3 — carotid demo video slot. The interactive worksheet/engine
             walkthrough that lived here was removed in favour of a recorded
             demo of the real product; drop it in below. */}
+
+        {/* ------------------------------------------------------------------
+            Beat 4 — what ships inside the engine ("lab in a box"). Compact on
+            purpose: sources, IAC caveats and versioning live on /product.
+            Status tags must match ClinicalContent.tsx on the product page and
+            the Lumen app (docs/Lumen_Homepage.md, "Built-in clinical content").
+            ------------------------------------------------------------------ */}
+        <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-2">
+            <h3 className="text-sm font-semibold uppercase tracking-[0.2em] text-foreground-muted">
+              Ships inside the engine
+            </h3>
+            <p className="max-w-3xl text-base leading-relaxed text-foreground-muted">
+              A new lab doesn&apos;t start from an empty form builder. Lumen ships with the clinical
+              content a vascular lab runs on, and every facility can keep it, adjust it, or replace it.
+            </p>
+          </div>
+          <div className="grid gap-4 md:grid-cols-3">
+            {SHIPPED_CONTENT.map((item) => (
+              <div
+                key={item.title}
+                className="hover-card flex flex-col gap-3 rounded-xl border border-line-strong bg-ink-card p-5 sm:p-6"
+              >
+                <h4 className="text-base font-semibold text-foreground">{item.title}</h4>
+                <p className="text-sm leading-relaxed text-foreground-muted">{item.description}</p>
+                <span className="mt-auto self-start rounded-full border border-line-strong px-2 py-0.5 font-mono text-[11px] uppercase tracking-wide text-foreground-muted">
+                  {item.tag}
+                </span>
+              </div>
+            ))}
+          </div>
+          <Link
+            href="/product#lab-in-a-box"
+            className="self-start text-sm text-button underline-offset-4 hover:underline"
+          >
+            See exactly what ships, and where each default comes from &rarr;
+          </Link>
+        </div>
 
         {/* The section's two closing arguments, given equal weight. They were
             previously one bare paragraph and one boxed one, which read as an

@@ -1,0 +1,28 @@
+# Foundry approval gates: actions that need recorded evidence and/or approval.
+#
+# Agents propose; deterministic systems authorize. The control plane evaluates these
+# gates in code before it performs the action; no agent can talk its way past one.
+gates:
+  - id: merge_main
+    description: Merge a task's integrated work into the main branch.
+    requires_evidence: [commit, tests, qa]
+    requires_approval: human
+  - id: contract_change
+    description: Change a contract other workstreams depend on.
+    requires_evidence: [contract, decision]
+    requires_approval: human
+  - id: schema_migration
+    description: Apply a migration to shared data.
+    requires_evidence: [migration, tests]
+    requires_approval: human
+  - id: dependency_add
+    description: Add a third-party dependency.
+    requires_evidence: [decision]
+    requires_approval: none
+  - id: policy_modify
+    description: Change policy or security controls.
+    requires_evidence: [decision]
+    requires_approval: human
+  - id: production_deploy
+    description: Deploy to production. No executor exists in Foundry Local.
+    allowed: false
